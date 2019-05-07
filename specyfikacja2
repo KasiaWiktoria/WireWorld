@@ -1,0 +1,156 @@
+\documentclass[10pt, oneside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{polski}
+\usepackage{indentfirst}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{polski}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+
+\title{Specyfikacja funkcjonalna programu WireWorld}
+\author{Danuta Stawiarz, Katarzyna Stankiewicz}
+\date{3 maja 2019 r.}
+
+\pagestyle{fancy}
+\fancyhf{} 
+\lhead{}
+\rhead{} 
+	
+\rfoot{
+\begin{center} Strona \thepage \hspace{1pt} z \pageref{LastPage}
+\end{center}
+}
+%____________________________________________________________________
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage	
+
+\section{Cel projektu}
+
+Celem projektu jest napisanie programu WireWorld. Program zaimplementowany zostanie w języku java z użyciem biblioteki graficznej JavaFX. Po ukończeniu program będzie w stanie przeprowadzać proste symulacje, poprzez generowanie kolejnych planszy od ustawionej na początku przez użytkownika, podanej jako plik wejściowy lub losową w przypadku braku działań użytkownika. Ponadto możliwa będzie również interakcja użytkownika z programem poprzez interfejs graficzny i odpowiednie przyciski. Użytkownik będzie miał możliwość edycji danej planszy. 
+
+\section{Opis zasad programu}
+
+Automat komórkowy WireWorld ma za zadanie wykonać symulację, w której przekształca podaną planszę na podstawie kilku podstawowych zasad.
+
+ Komórka może znajdować się w jednym z czterech stanów:
+
+\begin{enumerate}
+\item Pusta,
+\item Głowa elektronu,
+\item Ogon elektrony,
+\item Przewodnik.
+\end{enumerate}
+
+W zaimplementowanym automacie przyjmuje się następujące kolory stanów:
+\begin{itemize}
+\item czarny - pusta
+\item niebieski - głowa elektronu
+\item czerwony - ogon elektronu
+\item biały - przewodnik
+\end{itemize}
+
+
+Kolejne generacje budowane są z wykorzystaniem zestawu pięciu zasad:
+\begin{enumerate}
+\item Komórka pozostaje Pusta, jeśli była Pusta.
+\item Komórka staje się Ogonem elektronu, jeśli była Głową elektronu.
+\item Komórka staje się Przewodnikiem, jeśli była Ogonem elektronu.
+\item Komórka staje się Głową elektronu tylko wtedy, gdy dokładnie 1 lub 2 sąsiadujące komórki są Głowami Elektronu.
+\item Komórka staje się Przewodnikiem w każdym innym wypadku.
+\end{enumerate}
+
+W WireWorld stosuje się sąsiedztwo Moore'a.
+\section{Wygląd interfejsu użytkownika}
+
+\section{Opis działania programu}
+W momencie uruchomienia programu pojawia się menu umożliwiające użytkownikowi wybór symulacji, którą chce przeprowadzić. W zależności od wyboru WireWorld lub Game of Life wyświetlone zostanie okno pozwalające na przeprowadzenie symulacji adekwatnej do wybranej opcji.
+
+\subsection{Ustawienia początkowe}
+Na wejściu użytkownik może podać plik zawierający dane do wczytania planszy lub podać wymiary planszy która ma zostać wczytana. W podania wymiarów użytkownik zostanie poproszony również o wybranie stanu w jakim ma zostać wczytana plansza. 
+\begin{itemize}
+\item wypełnij losowo - plansza ma zostać wypełniona losowo
+\item pusta plansza - wszystkie komórki są martwe (dla  Game of Life) lub puste (dla WireWorld)
+\end{itemize}
+
+\subsection{Zarządzanie planszą}
+Obok planszy będą wyświetlane następujące opcje:
+\begin{itemize}
+\item wczytaj plik -  za pomocą tego przycisku użytkownik będzie mógł wczytać wybrany przez siebie plik
+\item start/stop - umożliwia wstrzymanie lub uruchomienie symulacji
+\item wymiary - dwa okienka: x - szerokość planszy y - wysokość planszy
+\item generacje - wyświetla ile generacji upłynęło od czasu działania programu, \item strzałki obok generacji - umożliwiają manualne przejście do kolejnej generacji lub powrót do poprzedniej (aktywne tylko w przypadku zatrzymanej symulacji)
+\item zapisz - umożliwia zapisanie planszy do pliku
+
+Obok planszy będzie się znajdowało również okno pozwalające na edycję aktualnej planszy. Będzie ono aktywne tylko w przypadku zatrzymanej symulacji.
+W przypadku zatrzymanej symulacji istnieje możliwość wyboru komórki na planszy i zmianę jej stanu.
+
+\end{itemize}
+\subsection{Przykładowy plik wejściowy}
+W obu wariantach gry pliki wejściowe muszą zawierać informację o wymiarach planszy oraz stanach poszczególnych komórek w niej umueszczonychl.
+\subsubsection{WireWorld}
+W tym wariancie gry komórki mogą przyjmować jeden z 4 stanów. W pliku tekstowym przyjmują one kolejno postać cyfr:
+\begin{itemize}
+\item 1- Komórka pusta
+\item 2- Głowa elektronu
+\item 3- Ogon elektronu
+\item 4- Przewodnik
+\end{itemize}
+Przykładowy plik może wyglądać następująco:
+\begin {verbatim}
+4 4
+1 2 0 1
+3 4 1 0
+0 1 1 2
+3 4 0 0 
+\end{verbatim}
+Wymiary planszy są podane w pierwszej linijce, a w kolejnych umieszczono dane o stanach komórek.
+
+\subsubsection{Game of Life}
+W tym wariancie gry komórki mogą przyjmować jeden z 2 stanów. W pliku tekstowym przyjmują one kolejno postać cyfr:
+\begin{itemize}
+\item 0- Komórka  żywa
+\item 1- Komórka martwa
+\end{itemize}
+Przykładowy plik może wyglądać następująco:
+\begin {verbatim}
+4 4
+1 0 0 1
+1 1 1 0
+0 1 1 0
+1 0 0 0 
+\end{verbatim}
+Wymiary planszy są podane w pierwszej linijce, a w kolejnych umieszczono dane o stanach komórek.
+
+
+
+
+
+
+\section{Wyniki działania programu}
+Wynikiem działania programu jest plik tekstowy zawierający dane o obrazie ostatniej generacji komórek. Plik ten zostaje zapisany pod podanym przez użytkownika adresem.  Na bieżąco użytkownik może też obserwować wygląd planszy wraz ze stanami poszczególnych komórek online.
+
+\section{Komunikaty błędów}
+\subsection{Błąd pliku wejściowego}
+W przypadku niepowodzenia wczytania pliku zostanie wyświetlony komunikat "Nie udało się wczytać pliku".
+Jeśli plik istnieje, ale zawiera błędy, komunikat będzie zawierał informację w której linii pojawił się błąd. 
+"Nieprawidłowa wartość w linii x, nierozpoznany znak: <błędny znak>"
+\subsection{Błędy w obsłudze planszy}
+ Jeśli użytkownik spróbuje podać nieprawidłowy rozmiar planszy, program wyświetli komunikat "Podano nieprawidłowy rozmiar planszy"
+\subsection{Błąd zapisu do pliku}
+W przypadku niepowodzeniazapisu pliku zostanie wyświetlony komunikat "Nie udało się zapisać do pliku". Program poprosi uzytkownika o wskazanie innego adresu zapisu.
+
+
+
+
+
+
+\end{document}
