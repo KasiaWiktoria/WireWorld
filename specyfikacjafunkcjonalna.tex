@@ -13,7 +13,7 @@
 \usepackage{tcolorbox}
 \usepackage{graphicx}
 
-\title{Specyfikacja funkcjonalna programu WireWorld}
+\title{Specyfikacja funkcjonalna automatu komórkowego - WireWorld, Game of Life}
 \author{Danuta Stawiarz, Katarzyna Stankiewicz}
 \date{3 maja 2019 r.}
 
@@ -35,9 +35,11 @@
 
 \section{Cel projektu}
 
-Celem projektu jest napisanie programu WireWorld. Program zaimplementowany zostanie w języku java z użyciem biblioteki graficznej JavaFX. Po ukończeniu program będzie w stanie przeprowadzać proste symulacje, poprzez generowanie kolejnych planszy od ustawionej na początku przez użytkownika, podanej jako plik wejściowy lub losową w przypadku braku działań użytkownika. Ponadto możliwa będzie również interakcja użytkownika z programem poprzez interfejs graficzny i odpowiednie przyciski. Użytkownik będzie miał możliwość edycji danej planszy. 
+Celem projektu jest napisanie automatu komórkowego łączącego dwie gry: WireWorld oraz Game of Life. Program zaimplementowany zostanie w języku java z użyciem biblioteki graficznej JavaFX. Po ukończeniu program będzie w stanie przeprowadzać proste symulacje, poprzez generowanie kolejnych planszy od ustawionej na początku przez użytkownika, podanej jako plik wejściowy lub losową w przypadku braku działań użytkownika. Ponadto możliwa będzie również interakcja użytkownika z programem poprzez interfejs graficzny i odpowiednie przyciski. Użytkownik będzie miał możliwość edycji danej planszy. 
 
 \section{Opis zasad programu}
+
+\subsection{WireWorld}
 
 Automat komórkowy WireWorld ma za zadanie wykonać symulację, w której przekształca podaną planszę na podstawie kilku podstawowych zasad.
 
@@ -55,7 +57,7 @@ W zaimplementowanym automacie przyjmuje się następujące kolory stanów:
 \item czarny - pusta
 \item niebieski - głowa elektronu
 \item czerwony - ogon elektronu
-\item biały - przewodnik
+\item żółty - przewodnik
 \end{itemize}
 
 
@@ -69,13 +71,40 @@ Kolejne generacje budowane są z wykorzystaniem zestawu pięciu zasad:
 \end{enumerate}
 
 W WireWorld stosuje się sąsiedztwo Moore'a.
+
+\subsection{Game of Life}
+Program „Gra w życie” to prosta symulacja której zasady działania określone są kilkoma regułami. W grze istnieje plansza, zawierająca pola białe
+i czarne. Pola białe oznaczają komórki żywe, pola czarne – martwe. Jeśli
+martwa komórka ma dokładnie 3 żywych sąsiadów, w następnej jednostce czasu staje się żywa (rodzi się). Żywa komórka, która ma obok siebie 2
+albo 3 żywych sąsiadów pozostaje nadal żywa; przy innej liczbie sąsiadów
+umiera (z ”samotności” albo ”zatłoczenia”). W programie stosujemy sąsiedztwo Moore’a, co oznacza, że uwzględniamy 8 przylegających komórek
+(znajdujących się: na południu, na południowym-zachodzie, na zachodzie,
+na północnym-zachodzie, na północy, na północnym-wschodzie, na wschodzie i na południowym-wschodzie).
 \section{Wygląd interfejsu użytkownika}
+\subsection{WireWorld}
+Poniżej przedstawiono wygląd interfejsu użytkownika, który pojawia się po włączeniu programu. Domyślnie jest to zakładka WireWorld.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{WireWorld_interface.png}
+	
+\end{figure}
+
+\subsection{Game of Life}
+
+Istnieje możliwość przełączenia gry na Game of Life w zakładce po prawej stronie. W takim wypadku pojawia się następujący interface:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=13cm]{GameOfLife_interface.png}
+	
+\end{figure}
 
 \section{Opis działania programu}
 W momencie uruchomienia programu pojawia się menu umożliwiające użytkownikowi wybór symulacji, którą chce przeprowadzić. W zależności od wyboru WireWorld lub Game of Life wyświetlone zostanie okno pozwalające na przeprowadzenie symulacji adekwatnej do wybranej opcji.
 
 \subsection{Ustawienia początkowe}
-Na wejściu użytkownik może podać plik zawierający dane do wczytania planszy lub podać wymiary planszy która ma zostać wczytana. W podania wymiarów użytkownik zostanie poproszony również o wybranie stanu w jakim ma zostać wczytana plansza. 
+Na wejściu użytkownik może podać plik zawierający dane do wczytania planszy lub podać wymiary planszy która ma zostać wczytana. Po podania wymiarów użytkownik może również o wybrać stan w jakim ma zostać wczytana plansza. 
 \begin{itemize}
 \item wypełnij losowo - plansza ma zostać wypełniona losowo
 \item pusta plansza - wszystkie komórki są martwe (dla  Game of Life) lub puste (dla WireWorld)
@@ -94,13 +123,45 @@ Obok planszy będzie się znajdowało również okno pozwalające na edycję akt
 W przypadku zatrzymanej symulacji istnieje możliwość wyboru komórki na planszy i zmianę jej stanu.
 
 \end{itemize}
-\subsection{Przykładowy plik wejściowy}
+\subsection{Przykładowe pliki wejściowe}
+W obu wariantach gry pliki wejściowe muszą zawierać informację o wymiarach planszy oraz stanach poszczególnych komórek w niej umieszczonych.
 \subsubsection{WireWorld}
-
+W tym wariancie gry komórki mogą przyjmować jeden z 4 stanów. W pliku tekstowym przyjmują one kolejno postać cyfr:
+\begin{itemize}
+\item 1- Komórka pusta
+\item 2- Głowa elektronu
+\item 3- Ogon elektronu
+\item 4- Przewodnik
+\end{itemize}
+Przykładowy plik może wyglądać następująco:
+\begin {verbatim}
+4 4
+1 2 0 1
+3 4 1 0
+0 1 1 2
+3 4 0 0 
+\end{verbatim}
+Wymiary planszy są podane w pierwszej linijce, a w kolejnych umieszczono dane o stanach komórek.
 
 \subsubsection{Game of Life}
+W tym wariancie gry komórki mogą przyjmować jeden z 2 stanów. W pliku tekstowym przyjmują one kolejno postać cyfr:
+\begin{itemize}
+\item 0- Komórka  żywa
+\item 1- Komórka martwa
+\end{itemize}
+Przykładowy plik może wyglądać następująco:
+\begin {verbatim}
+4 4
+1 0 0 1
+1 1 1 0
+0 1 1 0
+1 0 0 0 
+\end{verbatim}
+Wymiary planszy są podane w pierwszej linijce, a w kolejnych umieszczono dane o stanach komórek.
+
 
 \section{Wyniki działania programu}
+Wynikiem działania programu jest plik tekstowy zawierający dane o obrazie ostatniej generacji komórek. Plik ten zostaje zapisany pod podanym przez użytkownika adresem.  Na bieżąco użytkownik może też obserwować wygląd planszy wraz ze stanami poszczególnych komórek online.
 
 \section{Komunikaty błędów}
 \subsection{Błąd pliku wejściowego}
@@ -108,12 +169,9 @@ W przypadku niepowodzenia wczytania pliku zostanie wyświetlony komunikat "Nie u
 Jeśli plik istnieje, ale zawiera błędy, komunikat będzie zawierał informację w której linii pojawił się błąd. 
 "Nieprawidłowa wartość w linii x, nierozpoznany znak: <błędny znak>"
 \subsection{Błędy w obsłudze planszy}
-Jeśli użytkownik spróbuje podać nieprawidłowy rozmiar planszy, program wyświetli komunikat "Podano nieprawidłowy rozmiar planszy"
-
-
-
-
-
+ Jeśli użytkownik spróbuje podać nieprawidłowy rozmiar planszy, program wyświetli komunikat "Podano nieprawidłowy rozmiar planszy"
+\subsection{Błąd zapisu do pliku}
+W przypadku niepowodzenia zapisu pliku zostanie wyświetlony komunikat "Nie udało się zapisać do pliku". Program poprosi użytkownika o wskazanie innego adresu zapisu.
 
 
 \end{document}
