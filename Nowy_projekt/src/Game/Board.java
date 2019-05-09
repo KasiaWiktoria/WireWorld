@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 
+import java.lang.reflect.Method;
 import java.util.Random;
 
 public class Board {
@@ -45,7 +46,7 @@ public class Board {
         bwToolGC.fillRect(bwToolSize, 0, bwToolSize, bwToolSize);
     }
 
-    public void golCanvasFill(Canvas golCanvas) {
+    public void golCanvasRandomFill(Canvas golCanvas) {
         Random golGenerator = new Random();
         GraphicsContext golCanvasGC = golCanvas.getGraphicsContext2D();
         golCanvasGC.setFill(Color.BLACK);
@@ -60,12 +61,22 @@ public class Board {
         }
     }
 
-    public void canvasBlackFill(Canvas wwCanvas) {
-        GraphicsContext wwCanvasGC = wwCanvas.getGraphicsContext2D();
+    public void canvasBlackFill(Canvas canvas) {
+        GraphicsContext canvasGC = canvas.getGraphicsContext2D();
         for (int i = 0; i < this.getRows(); i++) {
             for (int j = 0; j < this.getColumns(); j++) {
-                wwCanvasGC.setFill(Color.BLACK);
-                wwCanvasGC.fillRect(j * this.cellSize, this.cellSize * i, this.cellSize, this.cellSize);
+                canvasGC.setFill(Color.BLACK);
+                canvasGC.fillRect(j * this.cellSize, this.cellSize * i, this.cellSize, this.cellSize);
+            }
+        }
+    }
+
+    public void cleanCanvas(Canvas canvas) {
+        GraphicsContext canvasGC = canvas.getGraphicsContext2D();
+        for (int i = 0; i < this.getRows(); i++) {
+            for (int j = 0; j < this.getColumns(); j++) {
+                canvasGC.setFill(Color.web("#EEEEEE"));
+                canvasGC.fillRect(0, 0,  800, 600);
             }
         }
     }
@@ -88,9 +99,28 @@ public class Board {
         }
     }
 
-    public void setDimension(TextField columns, TextField rows) {
-        this.setColumns(Integer.parseInt(columns.getText()));
-        this.setRows(Integer.parseInt(rows.getText()));
+    public void setDimension(TextField columns, TextField rows, Canvas canvas, String kindOfBoard/*, Method canvasFill*/) {
+
+        try {
+            this.columns = Integer.parseInt(columns.getText());
+            this.rows = Integer.parseInt(rows.getText());
+        }catch(NumberFormatException e){
+            System.out.println(e);
+        }
+        if(800/Double.parseDouble(columns.getText()) <600/Double.parseDouble(rows.getText()))
+            this.cellSize = 800./Double.parseDouble(columns.getText());
+        else
+            this.cellSize = 600./Double.parseDouble(rows.getText());
+        this.cleanCanvas(canvas);
+
+        if(kindOfBoard == "gol")
+            this.golCanvasRandomFill(canvas);
+        else if(kindOfBoard == "ww")
+            this.canvasBlackFill(canvas);
+
+        /*Object [] canvasToFill = new Object[1];
+        canvasToFill[0] = canvas;
+        canvasFill.invoke(this, canvasToFill);*/
     }
 
     public void setPromptForDimensions(TextField columns, TextField rows) {
@@ -99,29 +129,10 @@ public class Board {
     }
 
     //Getters and Setters methods
-    public void setColumns(int columns) {
-        this.columns = columns;
-    }
-
-    public void setRows(int rows) {
-        this.rows = rows;
-    }
-
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
-
-    public int getColumns() {
-        return columns;
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public Canvas getCanvas() {
-        return canvas;
-    }
+    public void setColumns(int columns) { this.columns = columns; }
+    public void setRows(int rows) { this.rows = rows; }
+    public void setCanvas(Canvas canvas) { this.canvas = canvas; }
+    public int getColumns() { return columns; }
+    public int getRows() { return rows; }
+    public Canvas getCanvas() { return canvas; }
 }
-
-
